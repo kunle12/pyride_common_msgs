@@ -116,6 +116,42 @@ Listens for messages where `node_id` matches the configured router ID (default: 
 **Parameters:**
 - `router_node_id`: Node ID to match (default: `message_router`)
 
+## Launch Files
+
+### loopback_router.launch.py
+Launch the loopback router node with optional configuration.
+
+```bash
+# Default launch
+ros2 launch pyride_common_msgs loopback_router.launch.py
+
+# Custom router ID
+ros2 launch pyride_common_msgs loopback_router.launch.py router_node_id:=custom_router
+```
+
+**Parameters:**
+- `router_node_id`: Node ID to match (default: `message_router`)
+
+## Testing
+
+Unit tests for the loopback router are available in `test/test_loopback_router.py`.
+
+```bash
+# Run tests
+cd /home/xun/ros2_ws
+colcon test --packages-select pyride_common_msgs
+
+# Or run directly
+python3 -m pytest src/pyride_common_msgs/test/test_loopback_router.py -v
+```
+
+**Test Coverage:**
+- Message filtering by node ID
+- JSON parsing and validation
+- Priority preservation
+- Header preservation
+- Message field validation
+
 ## Dependencies
 
 - `std_msgs`: Standard ROS message types
