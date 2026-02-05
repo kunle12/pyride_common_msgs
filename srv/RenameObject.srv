@@ -1,4 +1,5 @@
-string old_name # old name
-string new_name # name to change to 
+# Service to rename an enrolled object
+string old_name  # Current object name to rename
+string new_name  # New name for the object
 ---
-bool success # result
+bool success     # True if rename succeeded

@@ -1,8 +1,8 @@
-string name
-int32 instances
-float32 timeout
+string name            # Name to assign to the enrolled object
+int32 instances        # Number of object instances to enroll
+float32 timeout        # Maximum time allowed for enrollment (seconds)
 ---
-bool success
-string reason
+bool success           # True if enrollment succeeded
+string reason          # Failure reason if unsuccessful
 ---
-int32 step
+int32 step             # Current enrollment step progress

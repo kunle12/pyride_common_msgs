@@ -1,4 +1,4 @@
-Header header
+std_msgs/Header header
 string node_id
 bool for_console
 int8 priority

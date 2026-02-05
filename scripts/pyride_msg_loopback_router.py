@@ -1,39 +1,55 @@
 #!/usr/bin/env python
 
-import os
-import rospy
+import rclpy
+from rclpy.node import Node
 import json
 from pyride_common_msgs.msg import NodeStatus, NodeMessage
 
-class PyRideLoopbackMsgRouter( object ):
-    def __init__( self ):
-        self.sub = rospy.Subscriber("/pyride/node_message", NodeMessage, self.input_cb)
-        self.pub = rospy.Publisher("/pyride/node_status", NodeStatus, queue_size=2)
+# Default node ID for this router (can be overridden via parameter)
+NODE_ID = 'message_router'
+
+
+class PyRideLoopbackMsgRouter(Node):
+    def __init__(self):
+        super().__init__('pyride_msg_loopback_router')
+        self.declare_parameter('router_node_id', NODE_ID)
+        self._router_node_id = self.get_parameter('router_node_id').get_parameter_value().string_value
+        self.sub = self.create_subscription(
+            NodeMessage,
+            "/pyride/node_message",
+            self.input_cb,
+            10
+        )
+        self.pub = self.create_publisher(NodeStatus, "/pyride/node_status", 10)
 
     def input_cb( self, input_msg ):
-        if input_msg.node_id != 'message_router':
+        if input_msg.node_id != self._router_node_id:
             return
         try:
             message = json.loads(input_msg.command)
-        except:
-            rospy.logerr("invalid message format for PyRIDE message router")
+        except Exception:
+            self.get_logger().error("invalid message format for PyRIDE message router")
             return
         if not isinstance(message, dict) or 'node_id' not in message or 'command' not in message:
-            rospy.logerr("invalid message format for PyRIDE message router")
+            self.get_logger().error("invalid message format for PyRIDE message router")
             return
 
         msg = NodeStatus()
         msg.node_id = message['node_id']
         msg.header = input_msg.header
         msg.status_text = message['command']
+        msg.priority = input_msg.priority
         msg.for_console = False
-        self.pub.publish( msg )
+        self.pub.publish(msg)
+
 
 def main():
-    rospy.init_node('pyride_msg_loopback_router')
+    rclpy.init()
+    node = PyRideLoopbackMsgRouter()
+    rclpy.spin(node)
+    node.destroy_node()
+    rclpy.shutdown()
 
-    la = PyRideLoopbackMsgRouter()
-    rospy.spin()
 
 if __name__ == '__main__':
     main()
