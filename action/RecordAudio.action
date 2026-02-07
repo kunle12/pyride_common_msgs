@@ -1,0 +1,8 @@
+float32 period
+string format
+string filename
+---
+bool success
+string reason
+---
+int32 bytes

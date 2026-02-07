@@ -8,6 +8,7 @@ This package provides ROS2 message, service, and action definitions used by PyRI
 - Node communication (status and command messages)
 - Object tracking (detection, updates, status changes)
 - Object enrollment workflows
+- Audio recording and playback operations
 
 ## Topics
 
@@ -77,6 +78,10 @@ Image with annotated object detections.
 - `image`: Camera image (sensor_msgs/Image)
 - `objects`: Array of detected objects (TrackedObjectInfo)
 
+### AudioData
+Audio data buffer for audio transmission.
+- `data`: Audio data bytes (uint8 array)
+
 ## Services
 
 ### RenameObject
@@ -105,6 +110,35 @@ Action for enrolling new objects into the system.
 
 **Feedback:**
 - `step`: Current enrollment step
+
+### RecordAudio
+Action for recording audio to a file.
+
+**Goal:**
+- `period`: Recording duration (builtin_interfaces/Time)
+- `format`: Audio format (e.g., "wav", "mp3")
+- `filename`: Output file path
+
+**Result:**
+- `success`: True if recording succeeded
+- `reason`: Failure reason if unsuccessful
+
+**Feedback:**
+- `bytes`: Bytes recorded so far
+
+### AudioFilePlay
+Action for playing an audio file.
+
+**Goal:**
+- `filepath`: Path to the audio file
+
+**Result:**
+- `success`: True if playback succeeded
+- `reason`: Failure reason if unsuccessful
+- `total_time`: Total playback duration (builtin_interfaces/Time)
+
+**Feedback:**
+- `elapsed_played_time`: Elapsed playback time (builtin_interfaces/Time)
 
 ## Scripts
 
@@ -157,7 +191,6 @@ python3 -m pytest src/pyride_common_msgs/test/test_loopback_router.py -v
 - `std_msgs`: Standard ROS message types
 - `sensor_msgs`: Sensor message types (for Image)
 - `geometry_msgs`: Geometry message types (for Point32)
-- `action_msgs`: ROS2 action types
 
 ## Building
 
@@ -167,4 +200,4 @@ colcon build --packages-up-to pyride_common_msgs
 
 ## License
 
-BSD
+MIT License

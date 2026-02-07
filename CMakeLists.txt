@@ -16,7 +16,7 @@ find_package(ament_cmake REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(sensor_msgs REQUIRED)
 find_package(geometry_msgs REQUIRED)
-find_package(action_msgs REQUIRED)
+find_package(builtin_interfaces REQUIRED)
 find_package(rosidl_default_generators REQUIRED)
 
 # Generate interfaces using absolute paths
@@ -28,13 +28,16 @@ rosidl_generate_interfaces(${PROJECT_NAME}
   msg/TrackedObjectStatusChange.msg
   msg/TrackedObjectUpdate.msg
   msg/AnnotatedView.msg
+  msg/AudioData.msg
   srv/RenameObject.srv
   action/ObjectEnrolment.action
+  action/RecordAudio.action
+  action/AudioFilePlay.action
   DEPENDENCIES
   std_msgs
   sensor_msgs
   geometry_msgs
-  action_msgs
+  builtin_interfaces
 )
 
 # Install scripts
