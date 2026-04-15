@@ -29,7 +29,15 @@ rosidl_generate_interfaces(${PROJECT_NAME}
   msg/TrackedObjectUpdate.msg
   msg/AnnotatedView.msg
   msg/AudioData.msg
+  msg/FaceId.msg
+  msg/FaceIdWithImg.msg
   srv/RenameObject.srv
+  srv/ImgToFace.srv
+  srv/RegisterFace.srv
+  srv/CompareFace.srv
+  srv/CompareFaceWithImg.srv
+  srv/KnownFaces.srv
+  srv/UnregisterFace.srv
   action/ObjectEnrolment.action
   action/RecordAudio.action
   action/AudioFilePlay.action

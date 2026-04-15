@@ -1,0 +1,7 @@
+bool multiple
+bool save_unknown
+float32 confidence
+uint32 detect_id
+sensor_msgs/Image image
+---
+FaceId[] face_ids

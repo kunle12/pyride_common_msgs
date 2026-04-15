@@ -1,0 +1,6 @@
+string name
+string reference_id
+bool replace
+sensor_msgs/Image[] images
+---
+bool success
