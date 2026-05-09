@@ -41,6 +41,7 @@ rosidl_generate_interfaces(${PROJECT_NAME}
   action/ObjectEnrolment.action
   action/RecordAudio.action
   action/AudioFilePlay.action
+  action/TextToSpeech.action
   DEPENDENCIES
   std_msgs
   sensor_msgs

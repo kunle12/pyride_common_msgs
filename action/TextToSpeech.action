@@ -1,0 +1,12 @@
+# Text to synthesize and speak
+string text
+string voice
+string language
+bool save_to_file     # If true, save audio to file instead of playback/ROS topic
+---
+# Result information
+bool success
+string reason
+---
+# Feedback
+int32 progress    # Optional progress indicator (0-100)
