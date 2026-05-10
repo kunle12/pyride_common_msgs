@@ -3,6 +3,7 @@ string text
 string voice
 string language
 bool save_to_file     # If true, save audio to file instead of playback/ROS topic
+int32 seed           # Random seed for synthesis; <=0 or unset uses random seed, >0 uses specified seed
 ---
 # Result information
 bool success
