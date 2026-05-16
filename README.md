@@ -8,7 +8,10 @@ This package provides ROS2 message, service, and action definitions used by PyRI
 - Node communication (status and command messages)
 - Object tracking (detection, updates, status changes)
 - Object enrollment workflows
-- Audio recording and playback operations
+- Audio streaming and recording
+- Speech-to-text transcription
+- Text-to-speech synthesis
+- Face recognition and comparison
 
 ## Topics
 
@@ -79,10 +82,67 @@ Image with annotated object detections.
 - `objects`: Array of detected objects (TrackedObjectInfo)
 
 ### AudioData
-Audio data buffer for audio transmission.
-- `data`: Audio data bytes (uint8 array)
+Raw audio data buffer.
+
+- `data`: Audio sample bytes (uint8 array). PCM format described by accompanying AudioFormat message.
+
+### AudioFormat
+Audio stream metadata, typically published with `transient_local` durability for late-joining subscribers.
+
+- `sample_rate`: Sample rate in Hz (e.g., 16000, 24000, 96000)
+- `channels`: Number of audio channels
+- `depth`: Bits per sample (8, 16, 24, 32)
+
+### AudioTranscription
+Speech-to-text transcription result.
+
+- `text`: Transcribed text string
+- `language`: Language code (e.g., `"en"`, `"zh"`, `"zh-CN"`)
+
+### FaceId
+Face identity information.
+
+- `confidence`: Matching confidence (float)
+- `id`: Person identifier (uint8)
+
+### FaceIdWithImg
+Face identity with associated image data.
+
+- `confidence`: Matching confidence (float)
+- `id`: Person identifier (uint8)
+- `img`: Image data (sensor_msgs/Image)
 
 ## Services
+
+### CompareFace
+Compare a face descriptor against enrolled faces.
+
+**Request:** FaceId
+**Response:** FaceId (best match), success (bool), reason (string)
+
+### CompareFaceWithImg
+Compare a face image against enrolled faces.
+
+**Request:** sensor_msgs/Image
+**Response:** FaceId (best match), success (bool), reason (string)
+
+### ImgToFace
+Extract face descriptor from an image.
+
+**Request:** sensor_msgs/Image
+**Response:** FaceId, success (bool), reason (string)
+
+### KnownFaces
+List all known/enrolled faces.
+
+**Request:** (empty)
+**Response:** names (string[]), ids (uint8[]), success (bool)
+
+### RegisterFace
+Register a new face.
+
+**Request:** FaceId, name (string)
+**Response:** success (bool), reason (string)
 
 ### RenameObject
 Rename an enrolled object.
@@ -93,6 +153,12 @@ Rename an enrolled object.
 
 **Response:**
 - `success`: True if rename succeeded
+
+### UnregisterFace
+Remove a face from the enrollment database.
+
+**Request:** name (string)
+**Response:** success (bool), reason (string)
 
 ## Actions
 
@@ -109,7 +175,24 @@ Action for enrolling new objects into the system.
 - `reason`: Failure reason if unsuccessful
 
 **Feedback:**
-- `step`: Current enrollment step
+- `elapsed_played_time`: Elapsed playback time (builtin_interfaces/Time)
+
+### TextToSpeech
+Action for synthesizing text to speech. Used by `omnivoice_tts`.
+
+**Goal:**
+- `text`: Text to synthesize and speak (string)
+- `voice`: Voice name identifier (string)
+- `language`: Language code (string)
+- `save_to_file`: If true, save audio to file instead of playback/ROS topic (bool)
+- `seed`: Random seed for synthesis; <=0 uses random seed, >0 uses fixed seed (int32)
+
+**Result:**
+- `success`: True if synthesis succeeded (bool)
+- `reason`: Failure or cancel reason (string)
+
+**Feedback:**
+- `progress`: Optional progress indicator 0-100 (int32)
 
 ### RecordAudio
 Action for recording audio to a file.

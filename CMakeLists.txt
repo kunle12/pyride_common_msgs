@@ -29,6 +29,7 @@ rosidl_generate_interfaces(${PROJECT_NAME}
   msg/TrackedObjectUpdate.msg
   msg/AnnotatedView.msg
   msg/AudioData.msg
+  msg/AudioTranscription.msg
   msg/AudioFormat.msg
   msg/FaceId.msg
   msg/FaceIdWithImg.msg
