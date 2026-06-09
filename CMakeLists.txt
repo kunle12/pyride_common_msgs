@@ -31,6 +31,7 @@ rosidl_generate_interfaces(${PROJECT_NAME}
   msg/AudioData.msg
   msg/AudioTranscription.msg
   msg/AudioFormat.msg
+  msg/WakeWordData.msg
   msg/FaceId.msg
   msg/FaceIdWithImg.msg
   srv/RenameObject.srv
